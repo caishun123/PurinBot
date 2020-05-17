@@ -27,6 +27,10 @@ async def chat_waifu(session):
 @sv.on_command('老公', only_to_me=True)
 async def chat_laogong(session):
     await session.send('你给我滚！', at_sender=True)
+    
+@sv.on_command('我喜欢你', aliases=('我爱你', '亲亲'), only_to_me=True)
+async def chat_laogong(session):
+    await session.send('诶嘿嘿，mua~', at_sender=True)
 
 @sv.on_command('mua', only_to_me=True)
 async def chat_mua(session):
@@ -45,6 +49,28 @@ async def ddhaole(session):
 async def nihaole(session):
     await session.send('不许好，憋回去！')
     await util.silence(session.ctx, 30)
+
+@sv.on_command('所有的努力全部木大', only_to_me=False)
+async def nihaole(session):
+    await session.send('不要停下来啊！\nₘₙⁿ\n▏n\n█▏　､⺍\n█▏ ⺰ʷʷｨ\n█◣▄██◣\n◥██████▋\n　◥████ █▎\n　　███▉ █▎\n　◢████◣⌠ₘ℩\n　　██◥█◣\≫\n　　██　◥█◣\n　　█▉　　█▊\n　　█▊　　█▊\n　　█▊　　█▋\n　　 █▏　　█▙\n　　 █ \nだからよ...止まるじゃねえぞ')
+    await util.silence(session.ctx, 30)
+    
+@sv.on_command('不要停下来啊', aliases=('悼念'), only_to_me=False)
+async def chat_daonian(session):
+        await session.send(R.img('不要停下来啊.jpg').cqcode)
+        
+@sv.on_command('我要强奸你', aliases=('我要强奸露比', ), only_to_me=False)
+async def ddhaole(session):
+        await session.send('小心我把你婊子妈的子宫摘下来套你头上然后把你的鸡儿用液压钳剪掉哦~', at_sender=True)
+        await util.silence(session.ctx, 60*5)
+
+@sv.on_command('贴贴', only_to_me=True)
+async def chat_mua(session):
+    await session.send('呜嘿，贴贴~', at_sender=True)
+        
+@sv.on_command('贴贴贴贴', only_to_me=False)
+async def chat_mua(session):
+    await session.send('是找我贴贴吗！', at_sender=True)
 
 # ============================================ #
 

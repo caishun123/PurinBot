@@ -12,6 +12,7 @@ PCR会战管理命令 v2
 import os
 from datetime import datetime, timedelta
 from typing import List
+import matplotlib as mpl
 from matplotlib import pyplot as plt
 try:
     import ujson as json
@@ -32,7 +33,10 @@ from .battlemaster import BattleMaster
 from .exception import *
 
 plt.style.use('seaborn-pastel')
-plt.rcParams['font.family'] = ['DejaVuSans', 'Microsoft YaHei', 'SimSun', ]
+plt.rcParams['font.family'] = ['SimHei']
+
+#plt.rcParams['font.sans-serif']=['SimHei']
+#plt.rcParams['axes.unicode_minus']=False
 
 USAGE_ADD_CLAN = '!建会 N公会名 S服务器代号'
 USAGE_ADD_MEMBER = '!入会 昵称 (@qq)'
@@ -159,7 +163,7 @@ async def batch_add_member(bot:NoneBot, ctx:Context_T, args:ParseResult):
     try:
         mlist = await bot.get_group_member_list(self_id=ctx['self_id'], group_id=bm.group)
     except ActionFailed:
-        raise ClanBattleError('Bot缓存未更新，暂时无法使用一键入会。请尝试【!入会】命令逐个添加')
+        raise ClanBattleError('暂时关闭一键入会，请让群员自行使用命令入会')
     if len(mlist) > 50:
         raise ClanBattleError('群员过多！一键入会仅限50人以内群使用')
 
@@ -241,6 +245,14 @@ async def process_challenge(bot:NoneBot, ctx:Context_T, ch:ParseResult):
     'R': ArgHolder(tip='周目数', type=round_code, default=0),
     'B': ArgHolder(tip='Boss编号', type=boss_code, default=0)}))
 async def add_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
+    bm = BattleMaster(ctx['group_id'])
+    uid = ctx['user_id']
+    clan = _check_clan(bm)
+    _check_member(bm, uid, bm.group)
+    sub = _load_sub(bm.group)
+    sub.setdefault(SUBSCRIBE_TREE_KEY, [])
+    if uid in sub[SUBSCRIBE_TREE_KEY]:
+        raise AlreadyExistError("您已上树，无法出刀")
     challenge = ParseResult({
         'round': args.R,
         'boss': args.B,
@@ -250,6 +262,31 @@ async def add_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
         'flag': BattleMaster.NORM
     })
     await process_challenge(bot, ctx, challenge)
+    
+@cb_cmd(('弟弟刀'), ArgParser(usage='!弟弟刀 <伤害值> (@qq)', arg_dict={
+    '': ArgHolder(tip='伤害值', type=damage_int),
+    '@': ArgHolder(tip='qq号', type=int, default=0),
+    'R': ArgHolder(tip='周目数', type=round_code, default=0),
+    'B': ArgHolder(tip='Boss编号', type=boss_code, default=0)}))
+async def add_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
+    bm = BattleMaster(ctx['group_id'])
+    uid = ctx['user_id']
+    clan = _check_clan(bm)
+    _check_member(bm, uid, bm.group)
+    sub = _load_sub(bm.group)
+    sub.setdefault(SUBSCRIBE_TREE_KEY, [])
+    if uid in sub[SUBSCRIBE_TREE_KEY]:
+        challenge = ParseResult({
+            'round': args.R,
+            'boss': args.B,
+            'damage': args.get(''),
+            'uid': args['@'] or args.at or ctx['user_id'],
+         'alt': ctx['group_id'],
+         'flag': BattleMaster.NORM
+         })
+    else:
+        raise AlreadyExistError("不在树上还是去出甜心刀吧")
+    await process_challenge(bot, ctx, challenge)    
 
 
 @cb_cmd(('出尾刀', '收尾', '尾刀'), ArgParser(usage='!出尾刀 (<伤害值>) (@<qq号>)', arg_dict={
@@ -258,6 +295,14 @@ async def add_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
     'R': ArgHolder(tip='周目数', type=round_code, default=0),
     'B': ArgHolder(tip='Boss编号', type=boss_code, default=0)}))
 async def add_challenge_last(bot:NoneBot, ctx:Context_T, args:ParseResult):
+    bm = BattleMaster(ctx['group_id'])
+    uid = ctx['user_id']
+    clan = _check_clan(bm)
+    _check_member(bm, uid, bm.group)
+    sub = _load_sub(bm.group)
+    sub.setdefault(SUBSCRIBE_TREE_KEY, [])
+    if uid in sub[SUBSCRIBE_TREE_KEY]:
+        raise AlreadyExistError("老老实实挂树上吧")
     challenge = ParseResult({
         'round': args.R,
         'boss': args.B,
@@ -275,6 +320,14 @@ async def add_challenge_last(bot:NoneBot, ctx:Context_T, args:ParseResult):
     'R': ArgHolder(tip='周目数', type=round_code, default=0),
     'B': ArgHolder(tip='Boss编号', type=boss_code, default=0)}))
 async def add_challenge_ext(bot:NoneBot, ctx:Context_T, args:ParseResult):
+    bm = BattleMaster(ctx['group_id'])
+    uid = ctx['user_id']
+    clan = _check_clan(bm)
+    _check_member(bm, uid, bm.group)
+    sub = _load_sub(bm.group)
+    sub.setdefault(SUBSCRIBE_TREE_KEY, [])
+    if uid in sub[SUBSCRIBE_TREE_KEY]:
+        raise AlreadyExistError("挂树了都，出nm的刀？")
     challenge = ParseResult({
         'round': args.R,
         'boss': args.B,
@@ -490,6 +543,8 @@ async def add_sos(bot:NoneBot, ctx:Context_T, args:ParseResult):
     if uid in sub[SUBSCRIBE_TREE_KEY]:
         raise AlreadyExistError("您已在树上")
     sub[SUBSCRIBE_TREE_KEY].append(uid)
+    sub[LOCK_KEY] = []
+    #挂树前如果锁定，上树后自动解锁
     _save_sub(sub, bm.group)
     msg = [ "\n您已上树，本Boss被击败时将会通知您",
            f"目前{clan['name']}树上共{len(sub[SUBSCRIBE_TREE_KEY])}人" ]
@@ -528,6 +583,14 @@ async def lock_boss(bot:NoneBot, ctx:Context_T, args:ParseResult):
 
 @cb_cmd(('锁定', '申请出刀'), ArgParser('!锁定'))
 async def lock_boss(bot:NoneBot, ctx:Context_T, args:ParseResult):
+    bm = BattleMaster(ctx['group_id'])
+    uid = ctx['user_id']
+    clan = _check_clan(bm)
+    _check_member(bm, uid, bm.group)
+    sub = _load_sub(bm.group)
+    sub.setdefault(SUBSCRIBE_TREE_KEY, [])
+    if uid in sub[SUBSCRIBE_TREE_KEY]:
+        raise AlreadyExistError("在树上锁个锤子boss，再锁给你整个口球奥")
     bm = BattleMaster(ctx['group_id'])
     _check_clan(bm)
     _check_member(bm, ctx['user_id'], bm.group)
@@ -603,75 +666,14 @@ async def show_progress(bot:NoneBot, ctx:Context_T, args:ParseResult):
     await bot.send(ctx, '\n' + msg, at_sender=True)
 
 
-@cb_cmd('伤害统计', ArgParser(usage='!伤害统计'))
-async def stat_damage(bot:NoneBot, ctx:Context_T, args:ParseResult):
-    bm = BattleMaster(ctx['group_id'])
-    now = datetime.now()
-    clan = _check_clan(bm)
-    yyyy, mm, _ = bm.get_yyyymmdd(now)
-    stat = bm.stat_damage(1, now)
-
-    yn = len(stat)
-    if not yn:
-        await bot.send(ctx, f"{clan['name']}{yyyy}年{mm}月会战统计数据为空", at_sender=True)
-        return
-
-    stat.sort(key=lambda x: x[3][0], reverse=True)
-    name = [ s[2] for s in stat ]
-    y_pos = list(range(yn))
-    y_size = 0.3 * yn + 1.0
-    unit = 1e4
-    unit_str = 'w'
-
-    # convert to pre-sum
-    for s in stat:
-        d = s[3]
-        d[0] = 0
-        for i in range(2, 6):
-            d[i] += d[i - 1]
-    pre_sum_dmg = [
-        [ s[3][b] for s in stat ] for b in range(6)
-    ]
-
-    # generate statistic figure
-    fig, ax = plt.subplots()
-    fig.set_size_inches(10, y_size)
-    ax.set_title(f"{clan['name']}{yyyy}年{mm}月会战伤害统计")
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(name)
-    ax.set_ylim((-0.6, yn - 0.4))
-    ax.invert_yaxis()
-    ax.set_xlabel('伤害')
-    colors = ['#00a2e8', '#22b14c', '#b5e61d', '#fff200', '#ff7f27', '#ed1c24']
-    bars = [ ax.barh(y_pos, pre_sum_dmg[b], align='center', color=colors[b]) for b in range(5, -1, -1) ]
-    bars.reverse()
-    ax.ticklabel_format(axis='x', style='plain')
-    for b in range(1, 6):
-        for i, rect in enumerate(bars[b]):
-            x = (rect.get_width() + bars[b - 1][i].get_width()) / 2
-            y = rect.get_y() + rect.get_height() / 2
-            d = pre_sum_dmg[b][i] - pre_sum_dmg[b - 1][i]
-            if d > unit:
-                ax.text(x, y, f'{d/unit:.0f}{unit_str}', ha='center', va='center')
-    plt.subplots_adjust(left=0.12, right=0.96, top=1 - 0.35 / y_size, bottom=0.55 / y_size)
-    pic = util.fig2b64(plt)
-    plt.close()
-
-    await bot.send(ctx, ms.image(pic), at_sender=True)
-
-
-@cb_cmd(('统计', '分数统计'), ArgParser(usage='!分数统计'))
-async def stat_score(bot:NoneBot, ctx:Context_T, args:ParseResult):
+@cb_cmd('统计', ArgParser(usage='!统计'))
+async def stat(bot:NoneBot, ctx:Context_T, args:ParseResult):
     bm = BattleMaster(ctx['group_id'])
     now = datetime.now()
     clan = _check_clan(bm)
     yyyy, mm, _ = bm.get_yyyymmdd(now)
     stat = bm.stat_score(1, now)
     stat.sort(key=lambda x: x[3], reverse=True)
-    
-    if not len(stat):
-        await bot.send(ctx, f"{clan['name']}{yyyy}年{mm}月会战统计数据为空", at_sender=True)
-        return
 
     # msg = [ f"\n{yyyy}年{mm}月会战{clan['name']}分数统计：" ]
     # for _, _, name, score in stat:
@@ -686,17 +688,11 @@ async def stat_score(bot:NoneBot, ctx:Context_T, args:ParseResult):
     name = list(map(lambda i: i[2], stat))
     y_pos = list(range(yn))
 
-    if score[0] >= 1e8:
-        unit = 1e8
-        unit_str = 'e'
-    else:
-        unit = 1e4
-        unit_str = 'w'
-
     y_size = 0.3 * yn + 1.0
     fig.set_size_inches(10, y_size)
     bars = ax.barh(y_pos, score, align='center')
-    ax.set_title(f"{clan['name']}{yyyy}年{mm}月会战分数统计")
+
+    ax.set_title(f"\n{yyyy}年{mm}月会战{clan['name']}分数统计")
     ax.set_yticks(y_pos)
     ax.set_yticklabels(name)
     ax.set_ylim((-0.6, yn - 0.4))
@@ -705,7 +701,7 @@ async def stat_score(bot:NoneBot, ctx:Context_T, args:ParseResult):
     ax.ticklabel_format(axis='x', style='plain')
     for rect in bars:
         w = rect.get_width()
-        ax.text(w, rect.get_y() + rect.get_height() / 2, f'{w/unit:.2f}{unit_str}', ha='left', va='center')
+        ax.text(w, rect.get_y() + rect.get_height() / 2, f'{w/1e8:.2f}e', ha='left', va='center')
     plt.subplots_adjust(left=0.12, right=0.96, top=1 - 0.35 / y_size, bottom=0.55 / y_size)
     pic = util.fig2b64(plt)
     plt.close()
