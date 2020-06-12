@@ -21,6 +21,7 @@ async def say_sorry(session):
 async def chat_waifu(session):
     if not sv.check_priv(session.ctx, Priv.SUPERUSER):
         await session.send(R.img('laopo.jpg').cqcode)
+        await session.send(R.rec('ayashihentai_xcw.m4a').cqcode)
     else:
         await session.send('mua~')
 
@@ -34,7 +35,10 @@ async def chat_laogong(session):
 
 @sv.on_command('mua', only_to_me=True)
 async def chat_mua(session):
-    await session.send('笨蛋~', at_sender=True)
+    if not sv.check_priv(session.ctx, Priv.SUPERUSER):
+        await session.send(R.rec('nzzsm_xcw.m4a').cqcode)
+    else:
+        await session.send('笨蛋~', at_sender=True)
 
 @sv.on_command('来点星奏', only_to_me=False)
 async def seina(session):
@@ -71,7 +75,51 @@ async def chat_mua(session):
 @sv.on_command('贴贴贴贴', only_to_me=False)
 async def chat_mua(session):
     await session.send('是找我贴贴吗！', at_sender=True)
+    
+@sv.on_command('早上好', aliases=('早安'), only_to_me=True)
+async def chat_ohayou(session):
+    await session.send('早呀早呀~', at_sender=True)
+    
+@sv.on_command('晚安', aliases=('睡啦'), only_to_me=True)
+async def chat_oysm(session):
+    await session.send('快去睡吧~做个好梦哟ww', at_sender=True)
+    
+@sv.on_command('加油',only_to_me=True)
+async def chat_ganbare(session):
+    await session.send('嘿嘿~你也要加油啦~', at_sender=True)
 
+@sv.on_command('辛苦了',aliases=('辛苦啦'), only_to_me=True)
+async def chat_otkr(session):
+    await session.send('呜呜呜谢谢你QwQ', at_sender=True)
+    
+@sv.on_command('想你了', aliases=('想你啦'), only_to_me=True)
+async def chat_miss(session):
+    await session.send('我也...一直很想你呢w', at_sender=True)
+
+@sv.on_command('今天天气不错呢', aliases=('天气真好'), only_to_me=False)
+async def chat_tkgii(session):
+    await session.send('对呀对呀，好想和你一起出门玩呢~', at_sender=True)
+    
+@sv.on_command('下雨了', aliases=('打雷了'), only_to_me=False)
+async def chat_ame(session):
+    await session.send('呜呜呜呜呜我好怕打雷啊QwQ', at_sender=True)
+
+@sv.on_command('别怕', aliases=('别怕我在','有我在呢','我在呢','我陪你','我会陪你','我会陪你的'), only_to_me=True)
+async def chat_djb(session):
+    await session.send('你在我身边的话...应该什么都会变好的吧~', at_sender=True)
+    await session.send('嗯~最————喜欢你啦！', at_sender=False)
+
+@sv.on_command('下班', aliases=('下班啦','下班了'), only_to_me=False)
+async def chat_xb(session):
+    await session.send('哦吼！今天辛苦啦~', at_sender=True)
+
+@sv.on_command('又熬夜了？', only_to_me=True)
+async def chat_nosleep(session):
+    await session.send(R.img('又熬夜了.jpg').cqcode)
+    
+@sv.on_command('我醒啦', only_to_me=False)
+async def chat_nxl(session):
+    await session.send('你醒啦 给你留了头狂暴牛', at_sender=True)
 # ============================================ #
 
 @sv.on_keyword(('确实', '有一说一', 'u1s1', 'yysy'))
@@ -88,3 +136,8 @@ async def chat_clanba(bot, ctx):
 async def chat_neigui(bot, ctx):
     if random.random() < 0.10:
         await bot.send(ctx, R.img('内鬼.png').cqcode)
+
+@sv.on_keyword(('天气'))
+async def chat_tenki(bot, ctx):
+    if random.random() < 0.03:
+        await bot.send(ctx, "天気と言えば...天気がいいから、散歩しましょう。（笑）", at_sender=False)

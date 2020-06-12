@@ -238,7 +238,7 @@ class Service:
             return bool(self.get_user_priv(ctx) >= required_priv)
         else:
             # TODO: 处理私聊权限。暂时不允许任何私聊
-            return False
+            return True
 
     def _check_all(self, ctx):
         gid = ctx.get('group_id', 0)
@@ -328,12 +328,12 @@ class Service:
         return deco
 
 
-    def on_command(self, name, *, only_to_me=False, deny_tip=None, **kwargs) -> Callable:
+    def on_command(self, name, *, only_to_me=False, deny_tip=None, event='group', **kwargs) -> Callable:
         kwargs['only_to_me'] = only_to_me
         def deco(func:Callable[[CommandSession], Any]) -> Callable:
             @wraps(func)
             async def wrapper(session:CommandSession):
-                if session.ctx['message_type'] != 'group':
+                if session.ctx['message_type'] != event and event:
                     return
                 if not self.check_enabled(session.ctx['group_id']):
                     self.logger.debug(f'Message {session.ctx["message_id"]} is command of a disabled service, ignored.')

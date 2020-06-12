@@ -55,7 +55,7 @@ async def hb_handler(ctx):
                 pass
 
 # ============================================ #
-'''
+
 BANNED_WORD = (
     'rbq', 'RBQ', '憨批', '废物', '死妈', '崽种', '傻逼', '傻逼玩意', 
     '没用东西', '傻B', '傻b', 'SB', 'sb', '煞笔', 'cnm', '爬', 'kkp', 
@@ -73,9 +73,8 @@ async def ban_word(session):
     elif ctx['message_type'] == 'discuss':
         msg_from += f'@[讨论组:{ctx["discuss_id"]}]'
     logger.critical(f'Self: {ctx["self_id"]}, Message {ctx["message_id"]} from {msg_from}: {ctx["message"]}')
-    #await session.send(random.choice(BANNED_WORD))
-    Service.set_block_user(user_id, timedelta(hours=8))
+    # await session.send(random.choice(BANNED_WORD))
+    Service.set_block_user(user_id, timedelta(hours=1))
     pic = R.img(f"chieri{random.randint(1, 4)}.jpg").cqcode
-    await session.send(f"不理你啦！バーカー\n有种你就开祖安决斗功能啊！\n{pic}", at_sender=True)
-    await util.silence(session.ctx, 60*60*8)
-'''
+    await session.send(f"不理你啦！バーカー\n{pic}", at_sender=True)
+    await util.silence(session.ctx, 60*60)

@@ -19,8 +19,10 @@ class R:
     def img(path, *paths):
         return ResImg(os.path.join('img', path, *paths))
 
-
-
+    @staticmethod
+    def rec(path, *paths):
+        return ResRec(os.path.join('img/record', path, *paths))
+        
 class ResObj:
 
     def __init__(self, res_path):
@@ -67,3 +69,9 @@ class ResImg(ResObj):
 
     def open(self) -> Image:
         return Image.open(self.path)
+        
+class ResRec(ResObj):
+    @property
+    def cqcode(self) -> MessageSegment:
+        if get_bot().config.RESOURCE_URL:
+            return MessageSegment.record(self.url)
