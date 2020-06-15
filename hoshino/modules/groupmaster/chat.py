@@ -21,6 +21,7 @@ async def say_sorry(session):
 async def chat_waifu(session):
     if not sv.check_priv(session.ctx, Priv.SUPERUSER):
         await session.send(R.img('laopo.jpg').cqcode)
+        await session.send(R.rec('ayashihentai_xcw.m4a').cqcode)
     else:
         await session.send('mua~')
 
@@ -34,7 +35,10 @@ async def chat_laogong(session):
 
 @sv.on_command('mua', only_to_me=True)
 async def chat_mua(session):
-    await session.send('笨蛋~', at_sender=True)
+    if not sv.check_priv(session.ctx, Priv.SUPERUSER):
+        await session.send(R.rec('nzzsm_xcw.m4a').cqcode)
+    else:
+        await session.send('笨蛋~', at_sender=True)
 
 @sv.on_command('来点星奏', only_to_me=False)
 async def seina(session):
@@ -112,6 +116,10 @@ async def chat_xb(session):
 @sv.on_command('又熬夜了？', only_to_me=True)
 async def chat_nosleep(session):
     await session.send(R.img('又熬夜了.jpg').cqcode)
+    
+@sv.on_command('我醒啦', only_to_me=False)
+async def chat_nxl(session):
+    await session.send('你醒啦 给你留了头狂暴牛', at_sender=True)
 # ============================================ #
 
 @sv.on_keyword(('确实', '有一说一', 'u1s1', 'yysy'))

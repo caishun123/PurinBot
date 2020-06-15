@@ -4,8 +4,10 @@ sv = Service('_help_', manage_priv=Priv.SUPERUSER, visible=False)
 
 MANUAL = '''
 =====================
-- 枫使用说明 -
+- 枫12121212使用说明 -
 =====================
+- 公主连接Re:Dive -
+==================
 公会战手册页面 https://w.url.cn/s/AX8j81U
 公会战指令页面 https://w.url.cn/s/AxcGOeK
 [@bot来发十连] 十连转蛋模拟

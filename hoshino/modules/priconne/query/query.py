@@ -2,8 +2,9 @@ import itertools
 from hoshino import util, R, CommandSession
 from . import sv
 
-p1 = R.img('priconne/quick/r15-5-0.png').cqcode
-p2 = R.img('priconne/quick/r15-5.png').cqcode
+p1 = R.img('priconne/quick/r16-4-1.png').cqcode
+p2 = R.img('priconne/quick/r16-4-2.png').cqcode
+p9 = R.img('priconne/quick/r16-4-3.png').cqcode
 p4 = R.img('priconne/quick/r17-3-1.png').cqcode
 p5 = R.img('priconne/quick/r17-3-2.png').cqcode
 p6 = R.img('priconne/quick/r17-3-3.png').cqcode
@@ -25,7 +26,7 @@ async def rank_sheet(bot, ctx, match):
         '※升级手Q至8.3.5以查看图片'
     ]
     if is_jp:
-        msg.append('R16-5 rank表：')
+        msg.append('R17-3 rank表：')
         pos = match.group(3)
         if not pos or '前' in pos:
             msg.append(str(p4))
@@ -36,7 +37,7 @@ async def rank_sheet(bot, ctx, match):
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
     elif is_tw:
-        msg.append(f'R15-5 rank表：\n{p1}{p2}')
+        msg.append(f'R16-4 rank表：\n{p1}{p2}{p9}')
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
     elif is_cn:
