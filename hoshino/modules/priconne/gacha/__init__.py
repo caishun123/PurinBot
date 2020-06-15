@@ -220,8 +220,8 @@ async def gacha_300(session:CommandSession):
 
 @sv.on_rex(r'^氪金$', normalize=False)
 async def kakin(bot: NoneBot, ctx, match):
-    if ctx['user_id'] not in bot.config.SUPERUSERS:
-        return
+#    if ctx['user_id'] not in bot.config.SUPERUSERS:
+#        return
     count = 0
     for m in ctx['message']:
         if m.type == 'at' and m.data['qq'] != 'all':

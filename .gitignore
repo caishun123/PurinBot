@@ -2,6 +2,7 @@
 config.py
 config.json
 local_coolq_config/
+nohup.out
 
 # Database
 db.json
