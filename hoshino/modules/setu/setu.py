@@ -6,7 +6,7 @@ import random
 from nonebot import on_command, CommandSession, MessageSegment, NoneBot
 from nonebot.exceptions import CQHttpError
 
-from hoshino import R, Service, Privilege
+from hoshino import R, Service, Privilege, util
 from hoshino.util import FreqLimiter, DailyNumberLimiter
 
 _max = 5
@@ -31,7 +31,7 @@ def get_setu():
     return setu_gener.__next__()
 
 
-@sv.on_rex(re.compile(r'不够[涩瑟色]|[涩瑟色]图|来一?[点份张].*[涩瑟色]|再来[点份张]|看过了|铜'), normalize=True)
+@sv.on_rex(re.compile(r'不够[涩瑟色]|[涩瑟色]图|来一?[点份张].*[涩瑟色]|再来[点份张]'), normalize=True)
 async def setu(bot:NoneBot, ctx, match):
     """随机叫一份涩图，对每个用户有冷却时间"""
     uid = ctx['user_id']
@@ -48,6 +48,8 @@ async def setu(bot:NoneBot, ctx, match):
     pic = get_setu()
     try:
         await bot.send(ctx, pic.cqcode)
+        await util.silence(ctx, 300)
+        await bot.send(ctx,'臭死宅，快去冲！五分钟之内憋给我出现！')
     except CQHttpError:
         sv.logger.error(f"发送图片{pic.path}失败")
         try:

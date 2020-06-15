@@ -11,7 +11,7 @@ sv = Service('pcr-arena', manage_priv=Priv.SUPERUSER)
 from ..chara import Chara
 from . import arena
 
-DISABLE_NOTICE = '本群竞技场查询功能已禁用\n如欲开启，请与维护组联系'
+DISABLE_NOTICE = '↓竞技场查询请移步以下网站↓\nhttps://pcrdfans.com/battle'
 
 lmt = FreqLimiter(5)
 

@@ -4,10 +4,11 @@ from . import sv
 
 p1 = R.img('priconne/quick/r15-5-0.png').cqcode
 p2 = R.img('priconne/quick/r15-5.png').cqcode
-p4 = R.img('priconne/quick/r16-5-1.png').cqcode
-p5 = R.img('priconne/quick/r16-5-2.png').cqcode
-p6 = R.img('priconne/quick/r16-5-3.png').cqcode
+p4 = R.img('priconne/quick/r17-3-1.png').cqcode
+p5 = R.img('priconne/quick/r17-3-2.png').cqcode
+p6 = R.img('priconne/quick/r17-3-3.png').cqcode
 p7 = R.img('priconne/quick/r8-3.jpg').cqcode
+p8 = R.img('priconne/quick/bcr-r8.png').cqcode
 
 @sv.on_rex(r'^(\*?([日台国b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$', normalize=True)
 async def rank_sheet(bot, ctx, match):
@@ -15,7 +16,7 @@ async def rank_sheet(bot, ctx, match):
     is_tw = match.group(2) == '台'
     is_cn = match.group(2) == '国' or match.group(2) == 'b'
     if not is_jp and not is_tw and not is_cn:
-        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表\n*B服rank表\n※B服：开服仅开放至金装，r10前无需考虑卡rank，装备强化消耗较多mana，如非前排建议不强化', at_sender=True)
+        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表', at_sender=True)
         return
     msg = [
         '\n※不定期搬运，来源见图片',
@@ -39,9 +40,9 @@ async def rank_sheet(bot, ctx, match):
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
     elif is_cn:
-        await bot.send(ctx, '\nB服：开服仅开放至金装，r10前无需考虑卡rank\n※装备强化消耗较多mana，如非前排建议不强化\n※唯一值得考量的是当前只开放至r8-3，保持r7满装满强或许会更强\n※关于卡r的原因可发送"bcr速查"研读【为何卡R卡星】一帖', at_sender=True)
-        # await bot.send(ctx, str(p7))
-        # await util.silence(ctx, 60)
+        msg.append(f'十图R8 rank表：\n{p8}')
+        await bot.send(ctx, '\n'.join(msg), at_sender=True)
+        await util.silence(ctx, 60)
 
 
 @sv.on_command('arena-database', aliases=('jjc', 'JJC', 'JJC作业', 'JJC作业网', 'JJC数据库', 'jjc作业', 'jjc作业网', 'jjc数据库', 'JJC作業', 'JJC作業網', 'JJC數據庫', 'jjc作業', 'jjc作業網', 'jjc數據庫'), only_to_me=False)
@@ -113,4 +114,42 @@ DRAGON_TOOL = f'''
 @sv.on_command('拼音接龙', aliases=('一个顶俩', '韵母接龙'))
 async def dragon(session:CommandSession):
     await session.send(DRAGON_TOOL, at_sender=True)
+    await util.silence(session.ctx, 60)
+    
+MAP10_EQUIP = f'''
+===元素之心(物理首饰)===
+只刷【10-8】 少刷10-13和10-15
+别屯太多 11图有更好的
+-------------------------------
+===新月的哀叹(法系首饰)===
+刷【10-10】
+-------------------
+===替身手环===
+只刷【10-9】 不刷10-12 因为斧头困难本溢出
+-------------------
+===法王头巾===
+刷【10-13】 
+当仓库有60个天使弓的时候去刷10-7 有替身手环
+-------------------
+===天使靴===
+【10-8】 和元素之心一起刷
+-------------------
+===圣者长袍===
+【10-10】
+-------------------
+===隐者服饰===
+【10-9】和替身手环一起刷
+-------------------
+===朱红铠甲===
+【10-6】别屯 需要再刷 11图有更好的
+-------------------
+===秘银铠甲===
+【10-4】
+一个都别囤能混就混过去
+像深月酒鬼充电宝能不装就不装
+11图会大量溢出
+'''
+@sv.on_command('cn-map10', aliases=('十图装备','国服十图'), only_to_me=False)
+async def cn_map10_equip(session):
+    await session.send(MAP10_EQUIP, at_sender=True)
     await util.silence(session.ctx, 60)
