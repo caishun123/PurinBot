@@ -9,7 +9,7 @@ p4 = R.img('priconne/quick/r17-3-1.png').cqcode
 p5 = R.img('priconne/quick/r17-3-2.png').cqcode
 p6 = R.img('priconne/quick/r17-3-3.png').cqcode
 p7 = R.img('priconne/quick/r8-3.jpg').cqcode
-p8 = R.img('priconne/quick/bcr-r8.png').cqcode
+p8 = R.img('priconne/quick/r9-3.jpg').cqcode
 
 @sv.on_rex(r'^(\*?([日台国b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$', normalize=True)
 async def rank_sheet(bot, ctx, match):
@@ -17,7 +17,7 @@ async def rank_sheet(bot, ctx, match):
     is_tw = match.group(2) == '台'
     is_cn = match.group(2) == '国' or match.group(2) == 'b'
     if not is_jp and not is_tw and not is_cn:
-        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表', at_sender=True)
+        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表\n*国rank表', at_sender=True)
         return
     msg = [
         '\n※不定期搬运，来源见图片',
@@ -41,7 +41,7 @@ async def rank_sheet(bot, ctx, match):
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
     elif is_cn:
-        msg.append(f'十图R8 rank表：\n{p8}')
+        msg.append(f'R9-3 rank表：\n{p8}')
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
 
