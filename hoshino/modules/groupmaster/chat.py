@@ -129,7 +129,7 @@ async def chat_queshi(bot, ctx):
 
 @sv.on_keyword(('会战', '刀'))
 async def chat_clanba(bot, ctx):
-    if random.random() < 0.03:
+    if random.random() < 0.005:
         await bot.send(ctx, R.img('我的天啊你看看都几度了.jpg').cqcode)
 
 @sv.on_keyword(('内鬼'))
