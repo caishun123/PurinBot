@@ -20,6 +20,7 @@ Modified by by Xhl6699
 HoshiyoBot结合了HoshinoBot以及Yobot的主要功能，并且新增了些许自定义功能以及CoolQ插件。以下描述功能已包含HoshinoBot的插件以及CoolQ的插件，为Bot实际运行时的功能描述。：
 
 - **转蛋模拟**
+- **B服会战查询**
 - **竞技场解法查询（由https://pcrdfans.com/ 提供API支持）**
 - **竞技场结算提醒**
 - **公会战管理及数据统计分析**
@@ -32,6 +33,7 @@ HoshiyoBot结合了HoshinoBot以及Yobot的主要功能，并且新增了些许�
 - **角色UB语音查询**
 - **国服Wiki查询**
 - **PCR专属时报**
+- **无损音乐搜索（由acgjc.com 提供数据）**
 - **杀妈/祖安艺术家对喷模式（已禁用）**
 - **经验药水购买提醒**
 - **群授权系统**
