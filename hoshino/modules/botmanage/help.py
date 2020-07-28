@@ -8,8 +8,9 @@ MANUAL = '''
 =====================
 - 公主连接Re:Dive -
 ==================
-公会战手册页面 https://w.url.cn/s/AnXFMuZ
-公会战指令页面 https://w.url.cn/s/A7F81jA
+[会战帮助] 查看会战相关指令帮助
+[Box管理] 网页端录入管理公会成员Box
+[离职报告] 生成当期会战离职报告
 [会战查询] 查询国服会战数据，30分钟更新一次，接口由@Kengxxiao提供
 [@bot来发十连] 十连转蛋模拟
 [@bot来发单抽] 单抽转蛋模拟
@@ -39,12 +40,14 @@ MANUAL2 = '''
 ===========
 - 通用功能 -
 ===========
+[搜无损 星をつなげて] 搜索无损FLAC音乐，数据由acgjc.com提供
 [.r] 掷骰子
 [.r 3d12] 掷3次12面骰子
 [@bot精致睡眠] 8小时精致睡眠(bot需具有群管理权限)
 [给我来一份精致昏睡下午茶套餐] 叫一杯先辈特调红茶(bot需具有群管理权限)
 [@bot来杯咖啡] 联系维护组，空格后接反馈内容
 [#查询授权] 查询Bot在本群的到期时间
+[自助购买] Bot自助续费以及新购
 ==========
 - 群管理限定功能 -
 =================
@@ -70,6 +73,13 @@ wiki = '''
 ===========
 '''.strip()
 
+cbhelp = '''
+公会战手册页面 https://w.url.cn/s/ACg7k88
+公会战指令页面 https://w.url.cn/s/Akrwy93
+[离职报告] 生成当期会战离职报告
+[Box管理] 网页端录入管理公会成员Box
+'''.strip()
+
 
 @sv.on_command('help', aliases=('manual', '帮助', '说明', '使用说明', '幫助', '說明', '使用說明', '菜单', '菜單', 'manual1', '帮助1', '说明1', '使用说明1', '幫助1', '說明1', '使用說明1', '菜单1', '菜單1', 'help1'), only_to_me=False)
 async def send_help(session):
@@ -82,3 +92,7 @@ async def send_help(session):
 @sv.on_command('wiki查询', aliases=('Wiki查询','WIKI查询'), only_to_me=False)
 async def send_help(session):
     await session.send(wiki)
+    
+@sv.on_command('会战帮助', aliases=('！help','!help','!帮助','！帮助'), only_to_me=False)
+async def send_help(session):
+    await session.send(cbhelp)

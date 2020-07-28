@@ -7,7 +7,7 @@ async def leave_notice(session:NoticeSession):
     cfg = util.load_config(__file__)
     no_leave_notice_group = cfg.get('no_leave_notice', [])
     if session.ctx['group_id'] not in no_leave_notice_group:
-        await session.send(f"{session.ctx['user_id']}退群了。")
+        await session.send(f"{session.ctx['user_id']}溜了...")
 
 
 @on_notice('group_increase')
