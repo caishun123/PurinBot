@@ -22,9 +22,9 @@ async def clanbattle_query_clanname(session):
 		return
 	_lmt.start_cd(uid)
 	clan_name = util.normalize_str(session.current_arg_text)
-	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com/name/0"
+	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com//name/0"
 	name = json.dumps({ "clanName": clan_name })
-	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36','Content-Type': 'application/json','Referer': 'https://kengxxiao.github.io/Kyouka/','Origin': 'https://kengxxiao.github.io','Content-Length': '21'}
+	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','Custom-Source': 'PurinBot','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Host': 'service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com','Content-Length': '33','Pragma': 'no-cache','Cache-Control': 'no-cache','Origin': 'https://kyouka.kengxxiao.com','Referer': 'https://kyouka.kengxxiao.com/'}
 	r = requests.post(url,data=name,headers=headers,timeout=10)
 	if r.status_code == requests.codes.ok:
 		r_dec = json.loads(r.text)
@@ -59,7 +59,7 @@ async def rank_search(session):
 	
 	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com/line"
 	data = json.dumps({"history":0})
-	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Referer': 'https://kengxxiao.github.io/Kyouka/','Origin': 'https://kengxxiao.github.io','Accept-Language': 'zh-CN,zh;q=0.9,ja;q=0.8,en;q=0.7','Content-Length': '13',}
+	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','Custom-Source': 'PurinBot','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Host': 'service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com','Content-Length': '33','Pragma': 'no-cache','Cache-Control': 'no-cache','Origin': 'https://kyouka.kengxxiao.com','Referer': 'https://kyouka.kengxxiao.com/'}
 	r = requests.post(url,headers=headers,data=data,timeout=10)
 	if r.status_code == requests.codes.ok:
 		r_dec = json.loads(r.text)
@@ -86,7 +86,7 @@ async def clanbattle_query_rank(session):
 	rank = util.normalize_str(session.current_arg_text)
 	data = json.dumps({"history":0})
 	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com/rank/"+f"{rank}"
-	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Referer': 'https://kengxxiao.github.io/Kyouka/','Origin': 'https://kengxxiao.github.io','Accept-Language': 'zh-CN,zh;q=0.9,ja;q=0.8,en;q=0.7','Content-Length': '13',}
+	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','Custom-Source': 'PurinBot','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Host': 'service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com','Content-Length': '33','Pragma': 'no-cache','Cache-Control': 'no-cache','Origin': 'https://kyouka.kengxxiao.com','Referer': 'https://kyouka.kengxxiao.com/'}
 	r = requests.post(url,headers=headers,data=data,timeout=10)
 	if r.status_code == requests.codes.ok:
 		r_dec = json.loads(r.text)
@@ -112,7 +112,7 @@ async def clanbattle_query_leadername(session):
 	leader_name = util.normalize_str(session.current_arg_text)
 	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com/leader/0"
 	name = json.dumps({ "leaderName": leader_name })
-	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36','Content-Type': 'application/json','Referer': 'https://kengxxiao.github.io/Kyouka/','Origin': 'https://kengxxiao.github.io','Content-Length': '21'}
+	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','Custom-Source': 'PurinBot','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Host': 'service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com','Content-Length': '33','Pragma': 'no-cache','Cache-Control': 'no-cache','Origin': 'https://kyouka.kengxxiao.com','Referer': 'https://kyouka.kengxxiao.com/'}
 	r = requests.post(url,data=name,headers=headers,timeout=10)
 	if r.status_code == requests.codes.ok:
 		r_dec = json.loads(r.text)
@@ -148,7 +148,7 @@ async def clanbattle_query_score(session):
 	score = int(session.current_arg_text) - 1
 	data = json.dumps({"history":0})
 	url = "https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com/score/"+f"{score}"
-	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Referer': 'https://kengxxiao.github.io/Kyouka/','Origin': 'https://kengxxiao.github.io','Accept-Language': 'zh-CN,zh;q=0.9,ja;q=0.8,en;q=0.7','Content-Length': '13',}
+	headers = {'Accept': 'application/json, text/javascript, */*; q=0.01','Custom-Source': 'PurinBot','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36','Content-Type': 'application/json','Sec-Fetch-Site': 'cross-site','Sec-Fetch-Mode': 'cors','Sec-Fetch-Dest': 'empty','Host': 'service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com','Content-Length': '33','Pragma': 'no-cache','Cache-Control': 'no-cache','Origin': 'https://kyouka.kengxxiao.com','Referer': 'https://kyouka.kengxxiao.com/'}
 	r = requests.post(url,headers=headers,data=data,timeout=10)
 	if r.status_code == requests.codes.ok:
 		r_dec = json.loads(r.text)
