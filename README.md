@@ -1,8 +1,12 @@
-# HoshiyoBot
+# PurinbotBot
 
 Based on [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) & [Yobot](https://github.com/yuudi/yobot)
 Modified by Xhl6699
 
+## 官网
+
+[PurinBot](https://purinbot.bmfnfx.cn/)
+[PurinShop](https://shop.purinbot.bmfnfx.cn/)
 
 ## Account
 
