@@ -142,8 +142,13 @@ async def chat_queshi(bot, ctx):
 
 @sv.on_keyword(('内鬼'))
 async def chat_neigui(bot, ctx):
-    if random.random() < 0.10:
+    if random.random() < 0.03:
         await bot.send(ctx, R.img('内鬼.png').cqcode)
+
+@sv.on_keyword(('网抑云','黑化','生而为人'))
+async def chat_wyy(bot, ctx):
+    if random.random() < 0.05:
+        await bot.send(ctx, R.img('网抑云.jpg').cqcode)
 
 @sv.on_keyword(('天气'))
 async def chat_tenki(bot, ctx):

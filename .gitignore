@@ -36,6 +36,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+*.upload.tmp
 develop-eggs/
 dist/
 downloads/

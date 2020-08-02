@@ -5,8 +5,8 @@ Modified by Xhl6699
 
 ## 官网
 
-[PurinBot](https://purinbot.bmfnfx.cn/)
-[PurinShop](https://shop.purinbot.bmfnfx.cn/)
+-[PurinBot](https://purinbot.bmfnfx.cn/)
+-[PurinShop](https://shop.purinbot.bmfnfx.cn/)
 
 ## Account
 
