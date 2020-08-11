@@ -9,7 +9,7 @@ from hoshino.service import Service, Privilege as Priv
 # basic function for debug, not included in Service('chat')
 @on_command('zai?', aliases=('在?', '在？', '在吗', '在么？', '在嘛', '在嘛？'))
 async def say_hello(session):
-    await session.send('はい！私はいつも貴方の側にいますよ！')
+    await session.send('チャオニマ、私はここにいない！')
 
 sv = Service('chat', manage_priv=Priv.SUPERUSER, visible=False)
 
@@ -120,6 +120,19 @@ async def chat_nosleep(session):
 @sv.on_command('我醒啦', only_to_me=False)
 async def chat_nxl(session):
     await session.send('你醒啦 给你留了头狂暴牛', at_sender=True)
+    
+@sv.on_command('Box管理', aliases=('box管理','BOX管理','boxmgr','BoxMgr','BoxManager'), only_to_me=False)
+async def box_mgr(session):
+    await session.send('\nBox在线录入管理\nhttps://w.url.cn/s/AmE3Fmg', at_sender=True)
+
+@sv.on_command('自助购买', aliases=('续费Bot','续费bot','Bot续费','bot续费','purinshop'), only_to_me=False)
+async def box_shop(session):
+    await session.send('\nBot自助购买续费食用指北\n自助续费购买的地址在链接里面\nhttps://purinbot.bmfnfx.cn/help-purinshop/', at_sender=True)
+
+@sv.on_command('官网', aliases=('网站','主页','website'), only_to_me=True)
+async def bot_website(session):
+    await session.send('\nPurinBot官网\nhttps://w.url.cn/s/Aj7FzfS', at_sender=True)
+
 # ============================================ #
 
 @sv.on_keyword(('确实', '有一说一', 'u1s1', 'yysy'))
@@ -127,15 +140,20 @@ async def chat_queshi(bot, ctx):
     if random.random() < 0.05:
         await bot.send(ctx, R.img('确实.jpg').cqcode)
 
-@sv.on_keyword(('会战', '刀'))
-async def chat_clanba(bot, ctx):
-    if random.random() < 0.03:
-        await bot.send(ctx, R.img('我的天啊你看看都几度了.jpg').cqcode)
-
 @sv.on_keyword(('内鬼'))
 async def chat_neigui(bot, ctx):
-    if random.random() < 0.10:
+    if random.random() < 0.03:
         await bot.send(ctx, R.img('内鬼.png').cqcode)
+
+@sv.on_keyword(('网抑云','黑化','生而为人'))
+async def chat_wyy(bot, ctx):
+    if random.random() < 0.05:
+        await bot.send(ctx, R.img('网抑云.jpg').cqcode)
+
+@sv.on_keyword(('色图','涩图'))
+async def chat_sepi(bot, ctx):
+    if random.random() < 0.05:
+        await bot.send(ctx, R.img('sepi.png').cqcode)
 
 @sv.on_keyword(('天气'))
 async def chat_tenki(bot, ctx):

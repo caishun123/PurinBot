@@ -2,14 +2,13 @@ import itertools
 from hoshino import util, R, CommandSession
 from . import sv
 
-p1 = R.img('priconne/quick/r16-4-1.png').cqcode
-p2 = R.img('priconne/quick/r16-4-2.png').cqcode
-p9 = R.img('priconne/quick/r16-4-3.png').cqcode
-p4 = R.img('priconne/quick/r17-3-1.png').cqcode
-p5 = R.img('priconne/quick/r17-3-2.png').cqcode
-p6 = R.img('priconne/quick/r17-3-3.png').cqcode
-p7 = R.img('priconne/quick/r8-3.jpg').cqcode
-p8 = R.img('priconne/quick/bcr-r8.png').cqcode
+p1 = R.img('priconne/quick/r17-4-1.jpg').cqcode
+p2 = R.img('priconne/quick/r17-4-2.jpg').cqcode
+p3 = R.img('priconne/quick/r17-4-3.jpg').cqcode
+p4 = R.img('priconne/quick/r16-5-1.png').cqcode
+p5 = R.img('priconne/quick/r16-5-2.png').cqcode
+p6 = R.img('priconne/quick/r16-5-3.png').cqcode
+p7 = R.img('priconne/quick/r9-5.png').cqcode
 
 @sv.on_rex(r'^(\*?([日台国b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$', normalize=True)
 async def rank_sheet(bot, ctx, match):
@@ -17,7 +16,7 @@ async def rank_sheet(bot, ctx, match):
     is_tw = match.group(2) == '台'
     is_cn = match.group(2) == '国' or match.group(2) == 'b'
     if not is_jp and not is_tw and not is_cn:
-        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表', at_sender=True)
+        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表\n*国rank表', at_sender=True)
         return
     msg = [
         '\n※不定期搬运，来源见图片',
@@ -26,7 +25,17 @@ async def rank_sheet(bot, ctx, match):
         '※升级手Q至8.3.5以查看图片'
     ]
     if is_jp:
-        msg.append('R17-3 rank表：')
+        msg.append('R17-4 rank表：')
+        pos = match.group(3)
+        if not pos or '前' in pos:
+            msg.append(str(p1))
+        if not pos or '中' in pos:
+            msg.append(str(p2))
+        if not pos or '后' in pos:
+            msg.append(str(p3))
+        await bot.send(ctx, '\n'.join(msg), at_sender=True)
+        await util.silence(ctx, 60)
+    elif is_tw:
         pos = match.group(3)
         if not pos or '前' in pos:
             msg.append(str(p4))
@@ -36,12 +45,8 @@ async def rank_sheet(bot, ctx, match):
             msg.append(str(p6))
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
-    elif is_tw:
-        msg.append(f'R16-4 rank表：\n{p1}{p2}{p9}')
-        await bot.send(ctx, '\n'.join(msg), at_sender=True)
-        await util.silence(ctx, 60)
     elif is_cn:
-        msg.append(f'十图R8 rank表：\n{p8}')
+        msg.append(f'R9-5 rank表：\n{p7}')
         await bot.send(ctx, '\n'.join(msg), at_sender=True)
         await util.silence(ctx, 60)
 
@@ -115,42 +120,4 @@ DRAGON_TOOL = f'''
 @sv.on_command('拼音接龙', aliases=('一个顶俩', '韵母接龙'))
 async def dragon(session:CommandSession):
     await session.send(DRAGON_TOOL, at_sender=True)
-    await util.silence(session.ctx, 60)
-    
-MAP10_EQUIP = f'''
-===元素之心(物理首饰)===
-只刷【10-8】 少刷10-13和10-15
-别屯太多 11图有更好的
--------------------------------
-===新月的哀叹(法系首饰)===
-刷【10-10】
--------------------
-===替身手环===
-只刷【10-9】 不刷10-12 因为斧头困难本溢出
--------------------
-===法王头巾===
-刷【10-13】 
-当仓库有60个天使弓的时候去刷10-7 有替身手环
--------------------
-===天使靴===
-【10-8】 和元素之心一起刷
--------------------
-===圣者长袍===
-【10-10】
--------------------
-===隐者服饰===
-【10-9】和替身手环一起刷
--------------------
-===朱红铠甲===
-【10-6】别屯 需要再刷 11图有更好的
--------------------
-===秘银铠甲===
-【10-4】
-一个都别囤能混就混过去
-像深月酒鬼充电宝能不装就不装
-11图会大量溢出
-'''
-@sv.on_command('cn-map10', aliases=('十图装备','国服十图'), only_to_me=False)
-async def cn_map10_equip(session):
-    await session.send(MAP10_EQUIP, at_sender=True)
     await util.silence(session.ctx, 60)
