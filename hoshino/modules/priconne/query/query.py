@@ -1,5 +1,6 @@
 import itertools
-from hoshino import util, R, CommandSession
+from hoshino import util, R
+from hoshino.typing import CQEvent
 from . import sv
 
 p1 = R.img('priconne/quick/r17-4-1.jpg').cqcode
@@ -10,19 +11,17 @@ p5 = R.img('priconne/quick/r16-5-2.png').cqcode
 p6 = R.img('priconne/quick/r16-5-3.png').cqcode
 p7 = R.img('priconne/quick/r9-5.png').cqcode
 
-@sv.on_rex(r'^(\*?([日台国b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$', normalize=True)
-async def rank_sheet(bot, ctx, match):
+@sv.on_rex(r'^(\*?([日台国陆b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$')
+async def rank_sheet(bot, ev):
+    match = ev['match']
     is_jp = match.group(2) == '日'
     is_tw = match.group(2) == '台'
-    is_cn = match.group(2) == '国' or match.group(2) == 'b'
+    is_cn = match.group(2) and match.group(2) in '国陆b'
     if not is_jp and not is_tw and not is_cn:
-        await bot.send(ctx, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表\n*国rank表', at_sender=True)
+        await bot.send(ev, '\n请问您要查询哪个服务器的rank表？\n*日rank表\n*台rank表\n*国rank表', at_sender=True)
         return
     msg = [
-        '\n※不定期搬运，来源见图片',
-        '※图中若有广告与本bot无关',
-        '※表格仅供参考，升r有风险，强化需谨慎',
-        '※升级手Q至8.3.5以查看图片'
+        '\n※表格仅供参考，升r有风险，强化需谨慎\n※一切以会长要求为准——',
     ]
     if is_jp:
         msg.append('R17-4 rank表：')
@@ -33,8 +32,8 @@ async def rank_sheet(bot, ctx, match):
             msg.append(str(p2))
         if not pos or '后' in pos:
             msg.append(str(p3))
-        await bot.send(ctx, '\n'.join(msg), at_sender=True)
-        await util.silence(ctx, 60)
+        await bot.send(ev, '\n'.join(msg), at_sender=True)
+        await util.silence(ev, 60)
     elif is_tw:
         pos = match.group(3)
         if not pos or '前' in pos:
@@ -43,17 +42,17 @@ async def rank_sheet(bot, ctx, match):
             msg.append(str(p5))
         if not pos or '后' in pos:
             msg.append(str(p6))
-        await bot.send(ctx, '\n'.join(msg), at_sender=True)
-        await util.silence(ctx, 60)
+        await bot.send(ev, '\n'.join(msg), at_sender=True)
+        await util.silence(ev, 60)
     elif is_cn:
         msg.append(f'R9-5 rank表：\n{p7}')
-        await bot.send(ctx, '\n'.join(msg), at_sender=True)
-        await util.silence(ctx, 60)
+        await bot.send(ev, '\n'.join(msg), at_sender=True)
+        await util.silence(ev, 60)
 
 
-@sv.on_command('arena-database', aliases=('jjc', 'JJC', 'JJC作业', 'JJC作业网', 'JJC数据库', 'jjc作业', 'jjc作业网', 'jjc数据库', 'JJC作業', 'JJC作業網', 'JJC數據庫', 'jjc作業', 'jjc作業網', 'jjc數據庫'), only_to_me=False)
-async def say_arina_database(session):
-    await session.send('公主连接Re:Dive 竞技场编成数据库\n日文：https://nomae.net/arenadb \n中文：https://pcrdfans.com/battle')
+@sv.on_fullmatch(('jjc', 'JJC', 'JJC作业', 'JJC作业网', 'JJC数据库', 'jjc作业', 'jjc作业网', 'jjc数据库'))
+async def say_arina_database(bot, ev):
+    await bot.send(ev, '公主连接Re:Dive 竞技场编成数据库\n日文：https://nomae.net/arenadb \n中文：https://pcrdfans.com/battle')
 
 
 OTHER_KEYWORDS = '【日rank】【台rank】【b服rank】【jjc作业网】【黄骑充电表】【一个顶俩】'
@@ -89,27 +88,28 @@ BCR_SITES = f'''
 {OTHER_KEYWORDS}
 ※日台服速查请输入【pcr速查】'''
 
-@sv.on_command('pcr-sites', aliases=('pcr速查', 'pcr图书馆', 'pcr圖書館', '图书馆', '圖書館'))
-async def pcr_sites(session:CommandSession):
-    await session.send(PCR_SITES, at_sender=True)
-    await util.silence(session.ctx, 60)
-@sv.on_command('bcr-sites', aliases=('bcr速查', 'bcr攻略'))
-async def bcr_sites(session:CommandSession):
-    await session.send(BCR_SITES, at_sender=True)
-    await util.silence(session.ctx, 60)
+@sv.on_fullmatch(('pcr速查', 'pcr图书馆', '图书馆'))
+async def pcr_sites(bot, ev: CQEvent):
+    await bot.send(ev, PCR_SITES, at_sender=True)
+    await util.silence(ev, 60)
+@sv.on_fullmatch(('bcr速查', 'bcr攻略'))
+async def bcr_sites(bot, ev: CQEvent):
+    await bot.send(ev, BCR_SITES, at_sender=True)
+    await util.silence(ev, 60)
 
 
-YUKARI_SHEET_ALIAS = map(lambda x: ''.join(x), itertools.product(('黄骑', '酒鬼', '黃騎'), ('充电', '充电表', '充能', '充能表')))
+YUKARI_SHEET_ALIAS = map(lambda x: ''.join(x), itertools.product(('黄骑', '酒鬼'), ('充电', '充电表', '充能', '充能表')))
 YUKARI_SHEET = f'''
 {R.img('priconne/quick/黄骑充电.jpg').cqcode}
 ※大圈是1动充电对象 PvP测试
 ※黄骑四号位例外较多
 ※对面羊驼或中后卫坦 有可能歪
-※我方羊驼算一号位'''
-@sv.on_command('yukari-sheet', aliases=YUKARI_SHEET_ALIAS)
-async def yukari_sheet(session:CommandSession):
-    await session.send(YUKARI_SHEET, at_sender=True)
-    await util.silence(session.ctx, 60)
+※我方羊驼算一号位
+※图片搬运自漪夢奈特'''
+@sv.on_fullmatch(YUKARI_SHEET_ALIAS)
+async def yukari_sheet(bot, ev):
+    await bot.send(ev, YUKARI_SHEET, at_sender=True)
+    await util.silence(ev, 60)
 
 
 DRAGON_TOOL = f'''
@@ -117,7 +117,7 @@ DRAGON_TOOL = f'''
 龍的探索者們小遊戲單字表 https://hanshino.nctu.me/online/KyaruMiniGame
 镜像 https://hoshino.monster/KyaruMiniGame
 网站内有全词条和搜索，或需科学上网'''
-@sv.on_command('拼音接龙', aliases=('一个顶俩', '韵母接龙'))
-async def dragon(session:CommandSession):
-    await session.send(DRAGON_TOOL, at_sender=True)
-    await util.silence(session.ctx, 60)
+@sv.on_fullmatch(('一个顶俩', '拼音接龙', '韵母接龙'))
+async def dragon(bot, ev):
+    await bot.send(ev, DRAGON_TOOL, at_sender=True)
+    await util.silence(ev, 60)

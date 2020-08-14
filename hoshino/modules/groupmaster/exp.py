@@ -1,6 +1,6 @@
 import nonebot
 from hoshino.service import Service
-from hoshino.res import R
+from hoshino import R
 
 sv = Service('exp-reminder', enable_on_default=True)
 

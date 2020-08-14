@@ -2,8 +2,7 @@ from io import BytesIO
 import os
 import requests
 from PIL import Image
-from hoshino import NoneBot, CommandSession
-from hoshino.service import Service
+from hoshino import Service
 import matplotlib.pyplot as plt
 from .data_source import add_text,get_apikey
 import base64
@@ -18,11 +17,11 @@ month = str(time.tm_mon)
 year = str(time.tm_year)
 constellation = constellation_set[month]
 
-@sv.on_command('离职报告', aliases=('生成离职报告','生成报告'), only_to_me=False)
-async def create_resignation_report(session:CommandSession):
-    uid = session.ctx['user_id']
-    nickname = session.ctx['sender']['nickname']
-    gid = session.ctx['group_id']
+@sv.on_fullmatch(('离职报告','生成离职报告','生成报告'))
+async def create_resignation_report(bot, event):
+    uid = event.ctx['user_id']
+    nickname = event.ctx['sender']['nickname']
+    gid = event.ctx['group_id']
     apikey = get_apikey(gid)
     url = f'{yobot_url}/yobot/clan/{gid}/statistics/api/?apikey={apikey}'
     aiosession = aiohttp.ClientSession()
@@ -144,4 +143,4 @@ async def create_resignation_report(session:CommandSession):
     buf = BytesIO()
     img.save(buf,format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    await session.send(f'[CQ:image,file={base64_str}]', at_sender=True)
+    await bot.send(event, f'\r[CQ:image,file={base64_str}]', at_sender=True)

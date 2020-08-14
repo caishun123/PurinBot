@@ -4,9 +4,9 @@ from nonebot import get_bot
 from nonebot import CommandSession, MessageSegment
 from nonebot import permission as perm
 from .data import Question
-from hoshino.service import Service, Privilege as Priv
+from hoshino import Service, priv
 answers = {}
-sv = Service('QA', manage_priv=Priv.ADMIN, enable_on_default=False)
+sv = Service('QA', manage_priv=priv.ADMIN, enable_on_default=False)
 
 
 def union(group_id, user_id):

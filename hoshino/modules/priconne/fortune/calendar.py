@@ -12,11 +12,11 @@ async def today_fortune(session):
     await session.send('请输入“运势+任意数字(1~100)”查询今日运势哦~', at_sender=True)
 
 @sv.on_rex(r'^运势([1-9]\d?|100)$', normalize=True)
-async def today_fortune_query(bot, ctx, match):
-    uid = ctx['user_id']
+async def today_fortune_query(bot, event):
+    uid = event['user_id']
     if not lmt.check(uid):
-        await bot.send(ctx, '今天已经查过运势了哦，请明天再来吧~', at_sender=True)
-        return;
+        await bot.send(event, '今天已经查过运势了哦，请明天再来吧~', at_sender=True)
+        return
     lmt.increase(uid)
     
     config = util.load_config(__file__)
@@ -33,7 +33,7 @@ async def today_fortune_query(bot, ctx, match):
     position = random.choice(config["position"])
     actions = random.choice(config["actions"])
     
-    inputnum = int(match.group(1))
+    inputnum = int(event.match.group(1))
     flag = random.randint(1,100)
     diff = abs(inputnum - flag)
     if 0< diff <= 16:
@@ -58,4 +58,4 @@ async def today_fortune_query(bot, ctx, match):
     unsuitable = config["unsuitable"][unsuitable_thing]
     
     msg = f'\n今日运势：{fortune}\n当前时间：{timenow}\n今日幸运角色：{characters}\n宜{suitable}\n忌{unsuitable}\n抽卡加成时间：{gachatime}\n抽卡加成方向：{position}\n抽卡加成动作：{actions}\n'
-    await bot.send(ctx, msg, at_sender=True)
+    await bot.send(event, msg, at_sender=True)
