@@ -1,20 +1,14 @@
-from datetime import *
-import string
-import random
-from . import util
-
 import nonebot
+from . import util
 from quart import request, Blueprint, jsonify, render_template
-
 from hoshino import Service, priv
 
-sv = Service('homework', manage_priv=priv.SUPERUSER, enable_on_default=True, visible=False)
 auth = Blueprint('auth', __name__, url_prefix='/auth', template_folder="./vue", static_folder='./vue',
                  static_url_path='')
 bot = nonebot.get_bot()
 app = bot.server_app
 
-manage_password = 'Hanasaki03'  # 管理密码请修改
+manage_password = 'test'  # 管理密码
 
 
 @auth.route('/')
@@ -68,13 +62,39 @@ async def get_group():
     password = request.args.get('password')
     if password != manage_password:
         return 'failed'
-    return jsonify(util.get_group_list())
+    return jsonify(await util.get_group_list())
+
+
+@auth.route('/api/add/group', methods=['POST'])
+@auth.route('/api/update/group', methods=['POST'])
+async def update_group():
+    gid = int(request.args.get('gid'))
+    duration = int(request.args.get('duration'))
+    util.update_group(gid, duration)
+    return 'success'
 
 
 @auth.route('/api/activate', methods=['POST'])
 async def activate_group():
     key = request.args.get('key')
-    gid = request.args.get('gid')
+    gid = int(request.args.get('gid'))
     if util.reg_group(gid, key):
+        return 'success'
+    return 'failed'
+
+
+@auth.route('/api/notify/group', methods=['POST'])
+async def notify_group():
+    gid = int(request.args.get('gid'))
+    msg = request.args.get('msg')
+    if await util.notify_group(gid, msg):
+        return 'success'
+    return 'failed'
+
+
+@auth.route('/api/gun/group', methods=['POST'])
+async def gun_group():
+    gid = int(request.args.get('gid'))
+    if await util.gun_group(gid):
         return 'success'
     return 'failed'
