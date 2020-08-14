@@ -6,7 +6,7 @@ from nonebot import permission as perm
 from .data import Question
 from hoshino.service import Service, Privilege as Priv
 answers = {}
-sv = Service('QA', manage_priv=Priv.ADMIN, enable_on_default=False)
+sv = Service('QA', manage_priv=Priv.ADMIN, enable_on_default=True)
 
 
 def union(group_id, user_id):

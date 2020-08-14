@@ -104,6 +104,7 @@ async def create_resignation_report(session:CommandSession):
 
     buf = BytesIO()
     plt.savefig(buf, format='png', transparent=True, dpi=120)
+    plt.close()
     bar_img = Image.open(buf)
 
     #将饼图和柱状图粘贴到模板图,mask参数控制alpha通道，括号的数值对是偏移的坐标

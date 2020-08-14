@@ -9,7 +9,7 @@ from hoshino.service import Service, Privilege as Priv
 # basic function for debug, not included in Service('chat')
 @on_command('zai?', aliases=('在?', '在？', '在吗', '在么？', '在嘛', '在嘛？'))
 async def say_hello(session):
-    await session.send('シャオニマ、私はここにいない！')
+    await session.send('チャオニマ、私はここにいない！')
 
 sv = Service('chat', manage_priv=Priv.SUPERUSER, visible=False)
 
@@ -127,7 +127,7 @@ async def box_mgr(session):
 
 @sv.on_command('自助购买', aliases=('续费Bot','续费bot','Bot续费','bot续费','purinshop'), only_to_me=False)
 async def box_shop(session):
-    await session.send('\nPurinBot自助购买\nhttps://w.url.cn/s/AyIxpkF\n优惠券汇总（不定时更新）\nhttps://w.url.cn/s/AtYC6cP', at_sender=True)
+    await session.send('\nBot自助购买续费食用指北\n自助续费购买的地址在链接里面\nhttps://purinbot.bmfnfx.cn/help-purinshop/', at_sender=True)
 
 @sv.on_command('官网', aliases=('网站','主页','website'), only_to_me=True)
 async def bot_website(session):
@@ -149,6 +149,11 @@ async def chat_neigui(bot, ctx):
 async def chat_wyy(bot, ctx):
     if random.random() < 0.05:
         await bot.send(ctx, R.img('网抑云.jpg').cqcode)
+
+@sv.on_keyword(('色图','涩图'))
+async def chat_sepi(bot, ctx):
+    if random.random() < 0.05:
+        await bot.send(ctx, R.img('sepi.png').cqcode)
 
 @sv.on_keyword(('天气'))
 async def chat_tenki(bot, ctx):

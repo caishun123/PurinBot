@@ -18,7 +18,7 @@ def add_text(img: Image,text:str,textsize:int,font=font_path,textfill='black',po
 def get_apikey(gid: int) -> str:
 
     #请指定下一行代码中yobot的数据库绝对路径
-    db_path = '/home/ubuntu/HoshinoBot/hoshino/modules/yobot/yobot/src/client/yobot_data/yobotdata.db'
+    db_path = 'C:\Bot\HoshinoBot\hoshino\modules\yobot\yobot\src\client\yobot_data\yobotdata.db'
     #例：db_path = 'C:/Users/Administrator/Desktop/yobot/yobot/src/client/yobot_data/yobotdata.db'
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
